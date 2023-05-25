@@ -39,8 +39,6 @@ const calculateCountForEachGrade = () => {
   resetGradeCount();
   grades.forEach((grade) => {
     const letterGrade = getLetterGrade(grade);
-    console.log(grade);
-    console.log(letterGrade);
     const previousCount = gradeCount.get(letterGrade);
     gradeCount.set(letterGrade, previousCount + 1);
   });
