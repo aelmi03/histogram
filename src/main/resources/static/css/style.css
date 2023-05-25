@@ -126,6 +126,7 @@ input[type="number"]{
     display:flex;
     flex-flow:column nowrap;
     padding:0rem 1.5rem;
+    gap:0.5rem;
 }
 
 .grade-count{

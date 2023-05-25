@@ -1,4 +1,5 @@
 const boundsContainer = document.querySelector(".bounds");
+const distributionContainer = document.querySelector("#distribution-container");
 
 const grades = [
   65.95, 56.98, 78.62, 96.1, 90.3, 72.24, 92.34, 60.0, 81.43, 86.22, 88.33,
@@ -18,7 +19,7 @@ const gradeToPercentage = new Map([
   ["C", 60.0],
   ["C-", 55.0],
   ["D", 50.0],
-  ["F+", 0.0],
+  ["F", 0.0],
 ]);
 
 const gradeCount = new Map([
@@ -32,34 +33,33 @@ const gradeCount = new Map([
   ["C", 0],
   ["C-", 0],
   ["D", 0],
-  ["F+", 0],
+  ["F", 0],
 ]);
-
 const calculateCountForEachGrade = () => {
   resetGradeCount();
   grades.forEach((grade) => {
     const letterGrade = getLetterGrade(grade);
+    console.log(grade);
+    console.log(letterGrade);
     const previousCount = gradeCount.get(letterGrade);
     gradeCount.set(letterGrade, previousCount + 1);
   });
 };
 const resetGradeCount = () => {
-  [...gradeCount.keys].forEach((key) => gradeCount.set(key, 0));
+  [...gradeCount.keys()].forEach((key) => gradeCount.set(key, 0));
 };
 const getLetterGrade = (grade) => {
-  const ranges = [...gradeToPercentage.values];
+  const ranges = [...gradeToPercentage.values()].sort((a, b) => a - b);
   for (let i = 0; i < ranges.length - 1; i++) {
     const percentage = ranges[i];
     const nextLetterGradePercentage = ranges[i + 1];
     if (grade >= percentage && grade < nextLetterGradePercentage) {
-      gradeToPercentage.forEach((val, key) => {
-        if (val == percentage) {
-          return key;
-        }
-      });
+      return [...gradeToPercentage.keys()].filter(
+        (key) => gradeToPercentage.get(key) === percentage
+      )[0];
     }
   }
-  return "Max";
+  return "A+";
 };
 
 const renderLowerBounds = () => {
@@ -82,11 +82,29 @@ const renderLowerBounds = () => {
     boundsContainer.append(boundContainer);
   });
 };
-
-{
-  /* <div class = "bound">
+const renderHistogram = () => {
+  gradeCount.forEach((val, key) => {
+    const gradeCountContainer = document.createElement("div");
+    gradeCountContainer.className = "grade-count";
+    const letterGrade = document.createElement("p");
+    letterGrade.textContent = key;
+    const letterGradeCount = document.createElement("p");
+    letterGradeCount.textContent = val;
+    gradeCountContainer.appendChild(letterGrade);
+    gradeCountContainer.appendChild(letterGradeCount);
+    distributionContainer.appendChild(gradeCountContainer);
+  });
+};
+calculateCountForEachGrade();
+renderLowerBounds();
+renderHistogram();
+/* <div class = "bound">
                     <label for = "adjustBound">
                         Max
                     </label>
                     <input type="number" id = "adjustBound"></input> */
-}
+
+/* <div class = "grade-count">
+                        <p>A+</p>
+                        <p>OOOOO</p>
+                   </div> */
