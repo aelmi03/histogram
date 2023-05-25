@@ -98,6 +98,7 @@ input[type="number"]{
     border:1px solid rgb(217, 215, 215);
     box-shadow: 1px 1px 1px rgb(222, 222, 222);
     text-align: right;
+    width:150px;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode';
 }
 

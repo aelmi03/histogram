@@ -22,6 +22,33 @@ const gradeToPercentage = new Map([
   ["F", 0.0],
 ]);
 
+const gradeToNextLetterGrade = new Map([
+  ["A+", "Max"],
+  ["A", "A+"],
+  ["A-", "A"],
+  ["B+", "A-"],
+  ["B", "B+"],
+  ["B-", "B"],
+  ["C+", "B-"],
+  ["C", "C+"],
+  ["C-", "C"],
+  ["D", "C-"],
+  ["F", "D"],
+]);
+const gradeToPreviousLetterGrade = new Map([
+  ["Max", "A+"],
+  ["A+", "A"],
+  ["A", "A-"],
+  ["A-", "B+"],
+  ["B+", "B"],
+  ["B", "B-"],
+  ["B-", "C+"],
+  ["C+", "C"],
+  ["C", "C-"],
+  ["C-", "D"],
+  ["D", "F"],
+]);
+console.log(gradeToPercentage.keys());
 const gradeCount = new Map([
   ["A+", 0],
   ["A", 0],
@@ -35,6 +62,7 @@ const gradeCount = new Map([
   ["D", 0],
   ["F", 0],
 ]);
+console.log();
 const calculateCountForEachGrade = () => {
   resetGradeCount();
   grades.forEach((grade) => {
@@ -61,6 +89,7 @@ const getLetterGrade = (grade) => {
 };
 
 const renderLowerBounds = () => {
+  boundsContainer.innerHTML = "";
   gradeToPercentage.forEach((val, key) => {
     const boundContainer = document.createElement("div");
     boundContainer.className = "bound";
@@ -71,16 +100,39 @@ const renderLowerBounds = () => {
     boundInput.setAttribute("type", "number");
     boundInput.setAttribute("id", "adjustBound");
     boundInput.className = "adjustBound";
-    boundInput.setAttribute("step", "any");
     boundInput.value = val;
-    boundInput.setAttribute("min", "0");
-    boundInput.setAttribute("max", "100");
+    boundInput.addEventListener("input", changeLowerBound);
+    boundInput.setAttribute("data-key", key);
+    const minimumPercentage = calculateMinimum(key);
+    const maximumPercentage = calculateMax(key);
+    boundInput.setAttribute("min", minimumPercentage);
+    boundInput.setAttribute("max", maximumPercentage);
     boundContainer.appendChild(boundLabel);
     boundContainer.appendChild(boundInput);
     boundsContainer.append(boundContainer);
   });
 };
+const calculateMinimum = (grade) => {
+  if (grade === "F") {
+    return 0;
+  } else {
+    const previousLetterGrade = gradeToPreviousLetterGrade.get(grade);
+    console.log(grade, previousLetterGrade);
+    const minimum = gradeToPercentage.get(previousLetterGrade) + 1;
+    return minimum;
+  }
+};
+const calculateMax = (grade) => {
+  if (grade === "Max") {
+    return 100;
+  } else {
+    const nextLetterGrade = gradeToNextLetterGrade.get(grade);
+    const maximum = gradeToPercentage.get(nextLetterGrade) - 1;
+    return maximum;
+  }
+};
 const renderHistogram = () => {
+  distributionContainer.innerHTML = "";
   gradeCount.forEach((val, key) => {
     const gradeCountContainer = document.createElement("div");
     gradeCountContainer.className = "grade-count";
@@ -93,9 +145,36 @@ const renderHistogram = () => {
     distributionContainer.appendChild(gradeCountContainer);
   });
 };
-calculateCountForEachGrade();
-renderLowerBounds();
-renderHistogram();
+const changeLowerBound = (e) => {
+  const boundInput = e.target;
+  let newAmount = parseInt(boundInput.value);
+  const minimum = parseInt(boundInput.getAttribute("min"));
+  const maximum = parseInt(boundInput.getAttribute("max"));
+  console.log(newAmount, minimum, maximum);
+  if (newAmount > maximum) {
+    newAmount = maximum;
+  } else if (newAmount < minimum) {
+    newAmount = minimum;
+  }
+  console.log(newAmount, minimum, maximum);
+  const letterGrade = boundInput.getAttribute("data-key");
+  gradeToPercentage.set(letterGrade, newAmount);
+  console.log(gradeToPercentage);
+  updateRender();
+};
+const initialRender = () => {
+  renderLowerBounds();
+  calculateCountForEachGrade();
+  renderHistogram();
+};
+
+const updateRender = () => {
+  renderLowerBounds();
+  calculateCountForEachGrade();
+  renderHistogram();
+};
+
+initialRender();
 /* <div class = "bound">
                     <label for = "adjustBound">
                         Max
