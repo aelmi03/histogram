@@ -1,5 +1,8 @@
 const boundsContainer = document.querySelector(".bounds");
 const distributionContainer = document.querySelector("#distribution-container");
+const addGradeButton = document.querySelector("button");
+const addNewGradeInput = document.querySelector("#newGrade");
+const warningText = document.querySelector("#warningText");
 
 const grades = [
   65.95, 56.98, 78.62, 96.1, 90.3, 72.24, 92.34, 60.0, 81.43, 86.22, 88.33,
@@ -75,6 +78,11 @@ const resetGradeCount = () => {
   [...gradeCount.keys()].forEach((key) => gradeCount.set(key, 0));
 };
 const getLetterGrade = (grade) => {
+  if (grade > parseInt(gradeToPercentage.get("Max"))) {
+    return "A+";
+  } else if (grade < parseInt(gradeToPercentage.get("F"))) {
+    return "F";
+  }
   const ranges = [...gradeToPercentage.values()].sort((a, b) => a - b);
   for (let i = 0; i < ranges.length - 1; i++) {
     const percentage = ranges[i];
@@ -148,6 +156,9 @@ const renderHistogram = () => {
 const changeLowerBound = (e) => {
   const boundInput = e.target;
   let newAmount = parseInt(boundInput.value);
+  if (e.target.value == "") {
+    newAmount = 0;
+  }
   const minimum = parseInt(boundInput.getAttribute("min"));
   const maximum = parseInt(boundInput.getAttribute("max"));
   console.log(newAmount, minimum, maximum);
@@ -173,8 +184,32 @@ const updateRender = () => {
   calculateCountForEachGrade();
   renderHistogram();
 };
+const addNewGrade = (e) => {
+  if (addNewGradeInput.value == "") {
+    warningText.style.visibility = "visible";
+    return;
+  }
+  grades.push(parseInt(addNewGradeInput.value));
+  updateRender();
+};
+
+const validateNewGradeInput = (e) => {
+  let value = parseInt(e.target.value);
+  warningText.style.visibility = "hidden";
+  if (e.target.value == "") {
+    value = 0;
+  }
+  if (value > 100) {
+    value = 100;
+  } else if (value < 0) {
+    value = 0;
+  }
+  e.target.value = value;
+};
 
 initialRender();
+addGradeButton.addEventListener("click", addNewGrade);
+addNewGradeInput.addEventListener("input", validateNewGradeInput);
 /* <div class = "bound">
                     <label for = "adjustBound">
                         Max
