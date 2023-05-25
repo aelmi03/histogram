@@ -44,10 +44,11 @@ table {
 }
 section {
     background-color: #e9eff1;
-    padding:1rem 8rem 1rem 1rem;
+    padding:1rem 8rem 2rem 1rem;
     display:flex;
     flex-flow:column nowrap;
     gap:2rem;
+    max-width:500px;
 }
 body{
     display:flex;
@@ -75,12 +76,14 @@ main{
     display:flex;
     flex-flow: row wrap;
     gap:0.6rem;
+    width:100%;
 }
 
 #right-container{
     display:flex;
     flex-flow: column nowrap;
     gap:0.6rem;
+    min-height:100%;
 }
 
 #new-grade-container{
@@ -90,11 +93,11 @@ main{
     align-items: center;
 }
 
-input[type="text"]{
+input[type="number"]{
     padding:0.5rem;
     border:1px solid rgb(217, 215, 215);
     box-shadow: 1px 1px 1px rgb(222, 222, 222);
-    text-align: center;
+    text-align: right;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode';
 }
 
@@ -103,6 +106,7 @@ input[type="text"]{
     flex-flow: column nowrap;
     gap:0.6rem;
     padding:0rem 1.5rem;
+
 }
 
 .bound{
@@ -110,10 +114,11 @@ input[type="text"]{
     flex-flow: row nowrap;
     align-items: center;
     gap:6rem;
+    justify-content: space-between;
 }
 
 .bound > input{
-    max-width:100px;
+    max-width:70px;
 }
 
 
@@ -127,4 +132,13 @@ input[type="text"]{
     display:flex;
     flex-flow: row nowrap;
     gap:9rem;
+    justify-content: space-between;
+}
+
+#histogram{
+    flex-grow:1;
+}
+
+#grades{
+    min-height: 35%;
 }
