@@ -146,12 +146,37 @@ const renderHistogram = () => {
     gradeCountContainer.className = "grade-count";
     const letterGrade = document.createElement("p");
     letterGrade.textContent = key;
+    const progressBarContainer = document.createElement("div");
+    progressBarContainer.className = "progress-bar-container";
+    const progressBarBorder = document.createElement("div");
+    progressBarBorder.className = "grade-border";
+    const progressBarWidth = document.createElement("div");
+    progressBarWidth.className = "grade-progress";
+    progressBarContainer.appendChild(progressBarBorder);
+    progressBarBorder.appendChild(progressBarWidth);
     const letterGradeCount = document.createElement("p");
     letterGradeCount.textContent = val;
+    const determineProgressWidth = calculateProgressPercentage(key);
+    console.log(determineProgressWidth);
+    progressBarWidth.style.width = `${determineProgressWidth}%`;
+    progressBarContainer.appendChild(letterGradeCount);
     gradeCountContainer.appendChild(letterGrade);
-    gradeCountContainer.appendChild(letterGradeCount);
+    gradeCountContainer.appendChild(progressBarContainer);
     distributionContainer.appendChild(gradeCountContainer);
   });
+};
+const calculateProgressPercentage = (letterGrade) => {
+  const letterGradeCount = gradeCount.get(letterGrade);
+  const totalCount = [...gradeCount.values()].reduce(
+    (prev, curr) => prev + curr,
+    0
+  );
+  console.log(
+    letterGradeCount,
+    totalCount,
+    (letterGradeCount / totalCount) * 100
+  );
+  return (letterGradeCount / totalCount) * 100;
 };
 const changeLowerBound = (e) => {
   const boundInput = e.target;
@@ -218,5 +243,7 @@ addNewGradeInput.addEventListener("input", validateNewGradeInput);
 
 /* <div class = "grade-count">
                         <p>A+</p>
-                        <p>OOOOO</p>
+                        <div class="grade-border">
+  <div class="grade-progress" ></div>
+</div>
                    </div> */

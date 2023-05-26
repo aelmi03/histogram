@@ -133,7 +133,7 @@ input[type="number"]{
 .grade-count{
     display:flex;
     flex-flow: row nowrap;
-    gap:9rem;
+    gap:6rem;
     justify-content: space-between;
 }
 
@@ -174,4 +174,23 @@ button:hover{
     font-family:Arial, Helvetica, sans-serif;
     visibility: hidden;
 
+}
+
+.grade-border{
+    border:1px solid rgb(243, 105, 105);
+    width:100px;
+}
+
+.grade-progress{
+    background-color: #b82126;
+    height:20px;
+    transition:width 0.3s ease-in-out;
+    max-width:100px;
+}
+
+.progress-bar-container{
+    display:flex;
+    flex-flow:row nowrap;
+    gap:0.5rem;
+    max-width:150px;
 }
