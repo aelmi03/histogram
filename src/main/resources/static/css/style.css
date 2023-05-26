@@ -44,7 +44,7 @@ table {
 }
 section {
     background-color: #e9eff1;
-    padding:1rem 8rem 2rem 1rem;
+    padding:1rem 7rem 2rem 1rem;
     display:flex;
     flex-flow:column nowrap;
     gap:2rem;
@@ -142,7 +142,8 @@ input[type="number"]{
 }
 
 #grades{
-    min-height: 35%;
+    height:40%;
+    padding-bottom: 8rem;
 }
 
 #grade-container{
@@ -193,4 +194,5 @@ button:hover{
     flex-flow:row nowrap;
     gap:0.5rem;
     max-width:150px;
+    width:150px;
 }
