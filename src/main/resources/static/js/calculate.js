@@ -210,26 +210,33 @@ const updateRender = () => {
   renderHistogram();
 };
 const addNewGrade = (e) => {
-  if (addNewGradeInput.value == "") {
+  if (addNewGradeInput.value == "" || isNaN(addNewGradeInput.value)) {
     warningText.style.visibility = "visible";
     return;
   }
-  grades.push(parseInt(addNewGradeInput.value));
+  grades.push(parseFloat(addNewGradeInput.value));
   updateRender();
 };
-
 const validateNewGradeInput = (e) => {
-  let value = parseInt(e.target.value);
+  let value = parseFloat(e.target.value);
   warningText.style.visibility = "hidden";
   if (e.target.value == "") {
     value = 0;
-  }
-  if (value > 100) {
+    e.target.value = value;
+  } else if (
+    e.target.value.length > 1 &&
+    e.target.value[0] == "0" &&
+    e.target.value[1] != "."
+  ) {
+    console.log(e.target.value);
+    e.target.value = e.target.value.substring(1);
+  } else if (value > 100) {
     value = 100;
+    e.target.value = value;
   } else if (value < 0) {
     value = 0;
+    e.target.value = value;
   }
-  e.target.value = value;
 };
 
 initialRender();
